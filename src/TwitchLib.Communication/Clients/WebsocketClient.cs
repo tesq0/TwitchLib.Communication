@@ -54,6 +54,7 @@ namespace TwitchLib.Communication
         public event EventHandler<OnMessageThrottledEventArgs> OnMessageThrottled;
         public event EventHandler<OnWhisperThrottledEventArgs> OnWhisperThrottled;
         public event EventHandler<OnReconnectedEventArgs> OnReconnected;
+        public event EventHandler<OnNeedsToReconnectEventArgs> OnNeedsToReconnect;
         #endregion
 
         public WebSocketClient(IClientOptions options = null)

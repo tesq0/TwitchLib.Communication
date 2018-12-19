@@ -27,7 +27,7 @@ namespace TwitchLib.Communication
         public int SendQueueLength => _throttlers.SendQueue.Count;
         public int WhisperQueueLength => _throttlers.WhisperQueue.Count;
         private readonly string _server = "irc.chat.twitch.tv";
-        private int Port => _options != null ? _options.UseSsl ? 443 : 80 : 0;
+        private int Port => _options != null ? _options.UseSsl ? 443 : 6667 : 0;
         private System.Net.Sockets.TcpClient _client;
         private StreamReader _reader;
         private StreamWriter _writer;
@@ -57,6 +57,7 @@ namespace TwitchLib.Communication
         public event EventHandler<OnSendFailedEventArgs> OnSendFailed;
         public event EventHandler<OnStateChangedEventArgs> OnStateChanged;
         public event EventHandler<OnReconnectedEventArgs> OnReconnected;
+        public event EventHandler<OnNeedsToReconnectEventArgs> OnNeedsToReconnect;
         
         public TcpClient(IClientOptions options = null)
         {
@@ -150,7 +151,10 @@ namespace TwitchLib.Communication
            Task.Run(() =>
             {
                 if (!IsConnected)
+                {
                     CleanupServices();
+                    OnNeedsToReconnect?.Invoke(this, new OnNeedsToReconnectEventArgs());
+                }
                 else
                     Close(false);
 
