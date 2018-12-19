@@ -81,6 +81,11 @@ namespace TwitchLib.Communication.Interfaces
         event EventHandler<OnReconnectedEventArgs> OnReconnected;
 
         /// <summary>
+        /// Fires when an attemp to recconect is made.
+        /// </summary>
+        event EventHandler<OnNeedsToReconnectEventArgs> OnNeedsToReconnect;
+
+        /// <summary>
         /// Disconnect the Client from the Server
         /// <param name="callDisconnect">Set disconnect called in the client. Used in test cases. (default true)</param>
         /// </summary>
